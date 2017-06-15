@@ -12,11 +12,24 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>Spring 이야기</h1>
+			<c:choose>
+				<c:when test="${empty blogVo }">
+					<h1>${userID }님의 블로그 입니다.</h1>
+				</c:when>
+				<c:otherwise>
+					<h1>${blogVo.title }</h1>
+				</c:otherwise>
+			</c:choose>
 			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
+				<c:choose>
+					<c:when test="${empty authUser }">
+						<li><a href="${pageContext.request.contextPath }/user/login">로그인</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="${pageContext.request.contextPath }/user/logout">로그아웃</a></li>
+						<li><a href="${pageContext.request.contextPath }/">블로그 관리</a></li>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 		</div>
 		<div id="wrapper">
@@ -42,7 +55,9 @@
 
 		<div id="extra">
 			<div class="blog-logo">
-				<img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg">
+				<c:if test="${not empty blogVo.logo }">
+					<img src="${pageContext.request.contextPath}/assets/images/${blogVo.logo }">
+				</c:if>
 			</div>
 		</div>
 
@@ -58,7 +73,16 @@
 		
 		<div id="footer">
 			<p>
-				<strong>Spring 이야기</strong> is powered by JBlog (c)2016
+				<c:choose>
+					<c:when test="${empty blogVo }">
+						<strong>${userID }님의 블로그 </strong>
+					</c:when>
+					<c:otherwise>
+						<strong>${blogVo.title }</strong>
+					</c:otherwise>
+				</c:choose> 
+				
+				is powered by JBlog (c)2016
 			</p>
 		</div>
 	</div>
